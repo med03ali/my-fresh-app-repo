@@ -50,12 +50,15 @@ jobs:
         run: |
           cd manifests # Go into the checked out manifests directory
           # Construct the full image path
-          ECR_FULL_IMAGE="${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          ECR_FULL_IMAGE="${{ env.ECR_REGISTRY_URL }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          echo "Attempting to set image to: $ECR_FULL_IMAGE"
 
           # Use sed to replace the image tag in deployment.yaml
           # This assumes your image line looks like: image: 123...ecr.amazonaws.com/my-fresh-app:oldtag
           # The regex targets the image line and replaces everything after the colon
-          sed -i "s|image: .*\\.dkr\\.ecr\\..*\\.amazonaws\\.com/${{ env.ECR_REPOSITORY }}:.*|image: $ECR_FULL_IMAGE|" deployment.yaml
+          sed -i "s|image: .*|image: $ECR_FULL_IMAGE|" deployment.yaml
+
+          echo "--- deployment.yaml after sed ---"
 
           cat deployment.yaml # Print for debugging in logs
 
