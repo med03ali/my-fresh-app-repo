@@ -50,7 +50,7 @@ jobs:
         run: |
           cd manifests # Go into the checked out manifests directory
           # Construct the full image path
-          ECR_FULL_IMAGE="${{ env.ECR_REGISTRY_URL }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          ECR_FULL_IMAGE="343218191685.dkr.ecr.us-east-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
           echo "Attempting to set image to: $ECR_FULL_IMAGE"
 
           # Use sed to replace the image tag in deployment.yaml
